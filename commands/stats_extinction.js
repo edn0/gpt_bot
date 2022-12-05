@@ -9,7 +9,7 @@ async function get_extinction_data(user) {
     console.log("/////////////////////")
     console.log("////////////////")
 
-    url = "https://api.gtaliferp.fr:8443/v1/extinction/profiles/discord/" + user.id
+    url = "https://api.gtaliferp.fr:8443/v1/extinction/profiles/discord/" + user
 
     const response = await fetch(url, {
         "credentials": "omit",
@@ -40,9 +40,9 @@ async function get_extinction_data(user) {
         ratio : data["stats"][29]["value"],
         zombie_redzone : data["stats"][9]["value"],
         kill_redzone : data["stats"][6]["value"],
-        death_redzone : data["stats"][4]["value"],
-        ratio_redzone : data["stats"][8]["value"],
-        played_time : data["stats"][30]["value"]/3600,
+        death_redzone : data["stats"][8]["value"],
+        ratio_redzone : data["stats"][30]["value"],
+        played_time : data["stats"][1]["value"]/3600,
         level : data["rank"]
 }; // player stats 
 
@@ -55,14 +55,22 @@ async function get_extinction_data(user) {
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('stats_extinction')
-		.setDescription('Te files tes stats sur GLife Extinction.'),
+		.setDescription('Te files tes stats sur GLife Extinction.')
+        .addUserOption(option =>
+			option
+				.setName('joueur')
+				.setDescription("Joueur à analyser. Si rien n'est précisé, analyse ton profil.")
+				.setRequired(false)),
 	async execute(interaction) {
 		// interaction.user is the object representing the User who ran the command
 		// interaction.member is the GuildMember object, which represents the user in the specific guild
 		
-        const stats = await get_extinction_data(interaction.user);
+        let player = interaction.options.getUser("joueur") ?? interaction.user.id;
+
         
-        await interaction.reply(`${interaction.user.username}, voici tes stats sur GLife Extinction.\n 
+        const stats = await get_extinction_data(player);
+        
+        await interaction.reply(`${interaction.user.username}, voici les stats GLife Extinction demandées.\n 
 
         
         ${stats.zombie} 🧟 Zombies tués \n
@@ -73,9 +81,12 @@ module.exports = {
         ${stats.kill_redzone} ⚔️🔴 Opps tués en redzone \n
         ${stats.death_redzone} 🩸🔴 Morts en redzone \n
         ${stats.ratio_redzone} 〽🔴 Ratio en redzone \n
+        ${parseInt(stats.played_time)} 🕒 Heures de jeu \n
         ${stats.level} 👾 Niveau \n
         \n
-    
+         
+        \n
+         
 
         `);
 	},
