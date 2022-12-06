@@ -1,6 +1,11 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { Configuration, OpenAIApi } = require('openai');
 const { openai_token } = require('../config.json');
+const { AttachmentBuilder } = require('discord.js');
+
+
+
+
 
 const configuration = new Configuration({
     organization: "org-RsM7z7Dhw5w6viYnvLDGY1De",
@@ -9,10 +14,11 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
+let img_list = [];
 async function ask_gpt(prompt) {
     
     console.log(prompt);
-    const response = await fetch('https://api.openai.com/v1/completions', {
+    const response = await fetch('https://api.openai.com/v1/images/generations', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -20,17 +26,29 @@ async function ask_gpt(prompt) {
         },
 
         body: JSON.stringify({
-            'model': 'text-davinci-003',
             'prompt': prompt,
-            'temperature': 0,
-            'max_tokens': 256
+            'n': 1,
+            'size': "512x512"
         })
     });
     const data = await response.json();
-    console.log(data)
-    console.log(data.choices[0].text);
-    let answer = data.choices[0].text;
-    return answer;
+    console.log(data);
+
+
+    const answer = {
+        title: 'Reponse au prompt "' + prompt + '"\n',
+        image: {
+            url: data.data[0].url,
+        },
+    };
+    
+    let url = data.data[0].url;
+    const file = new AttachmentBuilder(url);
+    img_list[0] = file;
+
+    return answer
+
+
 
 }
 
@@ -39,8 +57,8 @@ async function ask_gpt(prompt) {
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('openai')
-		.setDescription("Fait ta demande à l'IA la plus développée du monde.")
+		.setName('dall_e')
+		.setDescription("Fait ta demande d'image à l'IA la plus développée du monde.")
         .addStringOption(option =>
             option
             .setName('prompt')
@@ -49,11 +67,12 @@ module.exports = {
 
 	async execute(interaction) {
 
+        
+        
         interaction.deferReply(`${interaction.user.username} la réponse arrive sous peu...`)
         const prompt = interaction.options.getString("prompt");
         console.log("1______ " + prompt);
         const answer = await ask_gpt(prompt);
-		interaction.editReply(`${interaction.user.username} a demandé "${prompt}" à GPT-3.\nVoici la réponse de l'IA \n
-        ${answer}`);
+		interaction.editReply({ embeds: [answer] });
 	},
 };

@@ -1,5 +1,5 @@
 const { REST, Routes } = require('discord.js');
-const { clientId, guildId, guildId_2, discord_token } = require('./config.json');
+const { clientId, guildId, guildId_2, guildId_3, discord_token } = require('./config.json');
 const fs = require('node:fs');
 
 const commands = [];
@@ -28,6 +28,11 @@ const rest = new REST({ version: '10' }).setToken(discord_token);
 
 		const data_2 = await rest.put(
 			Routes.applicationGuildCommands(clientId, guildId_2),
+			{ body: commands },
+		);
+
+		const data_3 = await rest.put(
+			Routes.applicationGuildCommands(clientId, guildId_3),
 			{ body: commands },
 		);
 

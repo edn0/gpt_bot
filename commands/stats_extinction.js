@@ -38,12 +38,14 @@ async function get_extinction_data(user) {
         pvp_kill : data["stats"][9]["value"],
         death : data["stats"][11]["value"],
         ratio : data["stats"][29]["value"],
-        zombie_redzone : data["stats"][9]["value"],
-        kill_redzone : data["stats"][6]["value"],
+        zombie_redzone : data["stats"][6]["value"],
+        kill_redzone : data["stats"][4]["value"],
         death_redzone : data["stats"][8]["value"],
         ratio_redzone : data["stats"][30]["value"],
         played_time : data["stats"][1]["value"]/3600,
-        level : data["rank"]
+        level : data["rank"],
+        player_name : data["name"]
+
 }; // player stats 
 
     return stats_value;
@@ -62,8 +64,7 @@ module.exports = {
 				.setDescription("Joueur à analyser. Si rien n'est précisé, analyse ton profil.")
 				.setRequired(false)),
 	async execute(interaction) {
-		// interaction.user is the object representing the User who ran the command
-		// interaction.member is the GuildMember object, which represents the user in the specific guild
+
 		
         let player = interaction.options.getUser("joueur") ?? interaction.user.id;
 
@@ -72,6 +73,7 @@ module.exports = {
         
         await interaction.reply(`${interaction.user.username}, voici les stats GLife Extinction demandées.\n 
 
+        ${stats.player_name}\n
         
         ${stats.zombie} 🧟 Zombies tués \n
         ${stats.pvp_kill} ⚔️ Opps tués \n
