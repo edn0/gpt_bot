@@ -21,7 +21,7 @@ async function ask_gpt(prompt) {
 
         body: JSON.stringify({
             'model': 'text-davinci-003',
-            'prompt': "fait un top 10 dont le sujet est :" + prompt,
+            'prompt': prompt,
             'temperature': 0,
             'max_tokens': 256
         })
@@ -39,7 +39,7 @@ async function ask_gpt(prompt) {
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('top')
+		.setName('top10')
 		.setDescription("Fait ta demande de top 10 à l'IA la plus développée du monde.")
         .addStringOption(option =>
             option
@@ -50,10 +50,11 @@ module.exports = {
 	async execute(interaction) {
 
         interaction.deferReply(`${interaction.user.username} la réponse arrive sous peu...`)
-        const prompt = interaction.options.getString("prompt");
-        console.log("1______ " + prompt);
-        const answer = await ask_gpt(prompt);
-		interaction.editReply(`${interaction.user.username} a demandé "${prompt}" à GPT-3.\nVoici la réponse de l'IA \n
+        const prompt = interaction.options.getString("sujet");
+        let prompt_to_send = "Top 10 " + prompt;
+        console.log("2______ " + prompt);
+        const answer = await ask_gpt(prompt_to_send);
+		interaction.editReply(`"${prompt_to_send}" selon GPT-3.\n
         ${answer}`);
 	},
 };
