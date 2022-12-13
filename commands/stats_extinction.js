@@ -123,7 +123,7 @@ module.exports = {
 
         interaction.deferReply();
         let rand = Math.floor(Math.random() * 1000);
-        let path = "C:/Users/lataz/Documents/dev/web/gpt_result/gpt_bot/stats_img/" + player + "_" + rand + ".jpg"; 
+        let path = "../stats_img" + player + "_" + rand + ".jpg"; 
 
         console.log(path)
         let player_avatar = "https://cdn.discordapp.com/avatars/" + player + "/" + interaction.user.avatar + ".png"
