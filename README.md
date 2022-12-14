@@ -25,7 +25,7 @@ Répond avec une image générée aléatoirement par Dall E en fonction du promp
 
 #### ```/stats_extinction ```
 Répond avec une image contenant les statistiques du joueur sur FiveM GLife Extinction.<br>*Nécessite d’avoir lié son compte Discord et son compte FiveM et avoir rejoint le serveur Discord GLife.*<br><br>
-![Carte de stat](https://github.com/edn0/gpt_bot/blob/2d7b38386560963feb6daa876cce9e9b6ac2666e/preview/stats_extinction_preview.png "Simple template HTML")
+![Carte de stat](https://github.com/edn0/gpt_bot/blob/2d7b38386560963feb6daa876cce9e9b6ac2666e/preview/stats_extinction_preview.jpg "Simple template HTML")
 
   
  #
