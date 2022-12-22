@@ -135,7 +135,7 @@ module.exports = {
         
         const file = new AttachmentBuilder(path, {name: player + "_" +rand + ".jpg"});
         const embed = new EmbedBuilder()
-            .setTitle("Statistiques Extinction : Bank : " + stats.bank)
+            .setTitle("Statistiques Extinction : \nBank : " + stats.bank + "$")
             .setImage("attachment://" + path)
     
 
