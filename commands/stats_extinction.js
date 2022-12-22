@@ -2,13 +2,14 @@ const { SlashCommandBuilder, AttachmentBuilder, EmbedBuilder } = require('discor
 const puppeteer = require('puppeteer');
 const { fs } = require('fs')
 
-
-
+let stats = {}
 async function get_template(path, player, player_avatar) {
+
 
     const data = await get_extinction_data(player);
     
-    let stats = {
+    
+    stats = {
     
         zombie : data["stats"][12]["value"],
         pvp_kill : data["stats"][9]["value"],
@@ -20,7 +21,8 @@ async function get_template(path, player, player_avatar) {
         ratio_redzone : data["stats"][30]["value"],
         played_time : parseInt(data["stats"][1]["value"]/3600),
         level : data["rank"],
-        player_name : data["name"]
+        player_name : data["name"],
+        bank : data["bank"]
 
     }; // player stats 
 
@@ -74,6 +76,7 @@ async function get_extinction_data(user) {
         "method": "GET",
         "mode": "cors"
     });
+    
     const data = await response.json();
 
 
@@ -121,7 +124,7 @@ module.exports = {
 //
         //`);
 
-        interaction.deferReply();
+        interaction.deferReply("Incoming...");
         let rand = Math.floor(Math.random() * 1000);
         let path = "../stats_img" + player + "_" + rand + ".jpg"; 
 
@@ -132,7 +135,7 @@ module.exports = {
         
         const file = new AttachmentBuilder(path, {name: player + "_" +rand + ".jpg"});
         const embed = new EmbedBuilder()
-            .setTitle("Statistiques Extinction")
+            .setTitle("Statistiques Extinction : Bank : " + stats.bank)
             .setImage("attachment://" + path)
     
 
