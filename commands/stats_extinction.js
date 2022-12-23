@@ -22,11 +22,14 @@ async function get_template(path, player, player_avatar) {
         played_time : parseInt(data["stats"][1]["value"]/3600),
         level : data["rank"],
         player_name : data["name"],
-        bank : data["bank"]
+        bank : new Intl.NumberFormat(`en-US`, {
+            currency: `USD`,
+            style: 'currency',
+        }).format(data["bank"])
 
     }; // player stats 
 
-    
+
     const browser = await puppeteer.launch({ 
         ignoreDefaultArgs: '--disable-extensions, --force-device-scale-factor',
         headless:true
