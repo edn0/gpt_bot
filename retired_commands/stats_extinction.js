@@ -1,3 +1,11 @@
+// The server changed their gamemodes and the API isn't reflecting it it seems.
+
+
+
+
+
+
+
 const { SlashCommandBuilder, AttachmentBuilder, EmbedBuilder } = require('discord.js')
 const puppeteer = require('puppeteer');
 const { fs } = require('fs')
